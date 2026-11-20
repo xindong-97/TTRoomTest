@@ -1,3 +1,7 @@
+# TTRoomTest v2
+
+v2 修复（2026-11-20）：真机闪退（TT 6.89.0，崩溃报告 TT-2026-11-20-113157.ips，incident C0296A01-FE72-4ED9-AA57-57BDB750B598）。崩溃栈：主线程 __NSFastEnumerationMutationHandler -> -[NSArray componentsJoinedByString:] -> __YTLog_block_invoke_2（TTRoomTest.dylib），EXC_CRASH/SIGABRT。根因在 YTLog：gLogLines 在日志串行队列上增删，却在主队列直接 componentsJoinedByString 读取，安装 Hook 时日志爆发、主队列拼接期间日志队列继续增删，触发快速枚举突变异常。修复：拼接移到日志队列内完成，主队列只接收拼好的不可变字符串。面板标题与加载日志同步升 v2。注意真机 TT 为 6.89.0（build 5221082），Hook 点实证来自 6.88.3 类表，类名/方法名若在新版改名，YTSwizzle 会记 MISS，须看真机 TTRoomTest.log 核对。
+
 # TTRoomTest v1
 
 2026-11-20，用户令做成插件去测试，自己房间、自己号测试（与之前小号先测、TTForge 本地自用同一口径）。独立插件，不并入 TTForge 大文件。停追三项不进插件：骂人驱动、0 级关系、抓包打号。
