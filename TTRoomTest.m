@@ -37,9 +37,10 @@ static void YTLog(NSString *fmt, ...) {
         if (gLogHandle) {
             @try { [gLogHandle writeData:[[line stringByAppendingString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding]]; } @catch (NSException *e) {}
         }
+        NSString *joined = [gLogLines componentsJoinedByString:@"\n"];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (gLogView) {
-                gLogView.text = [gLogLines componentsJoinedByString:@"\n"];
+                gLogView.text = joined;
                 NSRange r = NSMakeRange([gLogView.text length], 0);
                 [gLogView scrollRangeToVisible:r];
             }
@@ -256,7 +257,7 @@ static void YTBuildUI(void) {
         gPanel.backgroundColor = [UIColor colorWithWhite:0.08 alpha:0.96];
         gPanel.layer.cornerRadius = 12;
         gPanel.hidden = YES;
-        UILabel *title = YTLabel(@"房间测试 v1", 10);
+        UILabel *title = YTLabel(@"房间测试 v2", 10);
         title.font = [UIFont boldSystemFontOfSize:17];
         [gPanel addSubview:title];
         NSArray *names = @[@"防闭麦", @"防清屏", @"192k 音质", @"皮肤 DressId", @"防踢", @"万能上麦", @"灵动岛记录"];
@@ -324,7 +325,7 @@ __attribute__((constructor)) static void TTRoomTestInit(void) {
     }
     gLogHandle = [NSFileHandle fileHandleForWritingAtPath:logPath];
     [gLogHandle seekToEndOfFile];
-    YTLog(@"TTRoomTest v1 loaded");
+    YTLog(@"TTRoomTest v2 loaded");
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         YTInstallHooks();
         YTBuildUI();
