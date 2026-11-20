@@ -1,6 +1,8 @@
-# YufengTest v1
+# TTRoomTest v1
 
 2026-11-20，用户令做成插件去测试，自己房间、自己号测试（与之前小号先测、TTForge 本地自用同一口径）。独立插件，不并入 TTForge 大文件。停追三项不进插件：骂人驱动、0 级关系、抓包打号。
+
+改名记录（2026-11-20）：初版名 YufengTest，取自被分析插件“郁风TT黑科技”的拼音。用户质问为什么非要带着别人的名字，遂改名 TTRoomTest：源码文件、类名、面板标题“房间测试 v1”、悬浮按钮“房测”、日志文件 TTRoomTest.log、心动仓库名一并改，旧名 YufengTest 作废。本插件与郁风本人无任何关系：未取得其 dylib、未用其代码，Hook 点全部来自 TT 6.88.3 IPA 类表与反汇编实证，实现为自写。
 
 ## 范围（7 开关，默认全关）
 - 防闭麦：hook CommonRealTimeVoiceRoomViewController onMuteMicAction:tipsInView:muteToast:unmuteToast:（4 参真实现，IMP 0x1009216f4，1/2 参经 msgSend 转发到此，hook 一处覆盖）+ RealTimeMicControl shouldIgnoreMuteMic:（0x1006f09f0）。开时 mute=YES 不调用原方法，shouldIgnore 返回 YES。
@@ -13,8 +15,8 @@
 
 ## 实现方式
 - 纯 runtime swizzle（class_addMethod 优先、method_setImplementation 兜底），无 CydiaSubstrate 依赖，与 MomentIDTester 同路子，可自签注入。
-- 每个 Hook 先记日志（时间、类、方法、参数描述截断 160 字）再按开关决定是否调原方法，日志写 Documents/YufengTest.log 并显示在面板。
-- 悬浮按钮“郁测”打开面板，7 开关默认关，DressId 输入框默认空（0=只记录）。
+- 每个 Hook 先记日志（时间、类、方法、参数描述截断 160 字）再按开关决定是否调原方法，日志写 Documents/TTRoomTest.log 并显示在面板。
+- 悬浮按钮“房测”打开面板，7 开关默认关，DressId 输入框默认空（0=只记录）。
 - 代码无注释（按 2026-10-26 规矩），说明全在本文件。
 
 ## 自审（发版前五条）
