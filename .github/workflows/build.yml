@@ -1,4 +1,4 @@
-name: Build YufengTest
+name: Build TTRoomTest
 on:
   push:
     branches: [main]
@@ -13,12 +13,12 @@ jobs:
         run: |
           SDK="$(xcrun --sdk iphoneos --show-sdk-path)"
           echo "SDK: $SDK"
-          clang -arch arm64 -miphoneos-version-min=14.0 -isysroot "$SDK" -dynamiclib -fobjc-arc -framework UIKit -framework Foundation -undefined dynamic_lookup -o YufengTest.dylib YufengTest.m
-          ls -lh YufengTest.dylib
-          file YufengTest.dylib || true
+          clang -arch arm64 -miphoneos-version-min=14.0 -isysroot "$SDK" -dynamiclib -fobjc-arc -framework UIKit -framework Foundation -undefined dynamic_lookup -o TTRoomTest.dylib TTRoomTest.m
+          ls -lh TTRoomTest.dylib
+          file TTRoomTest.dylib || true
       - name: Upload dylib
         uses: actions/upload-artifact@v4
         with:
-          name: YufengTest-dylib
-          path: YufengTest.dylib
+          name: TTRoomTest-dylib
+          path: TTRoomTest.dylib
           if-no-files-found: error
